@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<window xmlns="http://schemas.haulmont.com/cuba/window.xsd"
+        caption="msg://editorCaption"
+        class="com.company.gaugedemo.web.kpi.KPIEdit"
+        datasource="kPIDs"
+        focusComponent="fieldGroup"
+        messagesPack="com.company.gaugedemo.web.kpi"
+        xmlns:chart="http://schemas.haulmont.com/charts/charts.xsd">
+    <dsContext>
+        <datasource id="kPIDs"
+                    class="com.company.gaugedemo.entity.KPI"
+                    view="kPI-view"/>
+        <valueCollectionDatasource id="kpiGaugeDs">
+            <query>
+                <![CDATA[select k.baseline as baseline, k.target as target, k.actual+k.baseline as actuals
+from gaugedemo$KPI k]]>
+            </query>
+            <properties>
+                <property datatype="int"
+                          name="baseline"/>
+                <property datatype="int"
+                          name="target"/>
+                <property datatype="int"
+                          name="actuals"/>
+            </properties>
+        </valueCollectionDatasource>
+    </dsContext>
+    <dialogMode height="600"
+                width="800"/>
+    <layout expand="windowActions"
+            spacing="true">
+        <groupBox orientation="horizontal"
+                  width="100%">
+            <fieldGroup id="fieldGroup"
+                        datasource="kPIDs">
+                <column width="250px">
+                    <field property="indicator"/>
+                    <field property="baseline"/>
+                    <field property="target"/>
+                    <field property="actual"/>
+                </column>
+            </fieldGroup>
+            <chart:gaugeChart id="gaugeChart"
+                              datasource="kpiGaugeDs"
+                              height="300px">
+                <chart:axes>
+                    <chart:axis id="gaugeChartAxis"
+                                axisAlpha="1"
+                                axisColor="BROWN"
+                                axisThickness="3"
+                                bottomTextYOffset="-20"
+                                tickAlpha="0.5"
+                                tickColor="BROWN">
+                    </chart:axis>
+                </chart:axes>
+                <chart:arrows>
+                    <chart:arrow/>
+                </chart:arrows>
+                <chart:export/>
+            </chart:gaugeChart>
+        </groupBox>
+        <frame id="windowActions"
+               screen="editWindowActions"/>
+    </layout>
+</window>
